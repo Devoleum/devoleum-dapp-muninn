@@ -77,7 +77,7 @@ const Verifier = (props: IPageProps) => {
             <div>
               <span class="label">Step name: </span>
               <a
-                href={"https://app.devoleum.com/step/" + step()._id}
+                href={"https://app.devoleum.com/step/" + step()._id["$oid"]}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -86,11 +86,11 @@ const Verifier = (props: IPageProps) => {
             </div>
             <div>
               <span class="label">JSON hash: </span>
-              {hash}
+              {hash()}
             </div>
             <div>
-              <span class="label">{props.blockchainName} hash: </span>
-              {proof}
+              <span class="label">{props.blockchainName} Timestamp: </span>
+              {new Date(proof() * 1000).toLocaleString()}
             </div>
             <div>
               <span class="label">{props.blockchainName} tx: </span>
