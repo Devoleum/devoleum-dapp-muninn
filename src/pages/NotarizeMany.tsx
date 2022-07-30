@@ -52,6 +52,14 @@ const NotarizeMany = (props: IPageProps) => {
     stepId: string,
     idx: number
   ) => {
+    try {
+      await isValidTokenCheck();
+    } catch (e) {
+      setIsValidToken(false);
+      setTxMessage("Please login to notarize");
+      return;
+    }
+
     if (!isValidToken()) return null;
 
     if (!props.signer) return;
@@ -165,6 +173,7 @@ const NotarizeMany = (props: IPageProps) => {
             {steps && (
               <div class="twelve columns" id="stepContainer">
                 <h4>2. Notarize</h4>
+                <div>{txMessage()}</div>
                 <table class="u-full-width" id="stepTable">
                   <thead>
                     <tr>
@@ -208,8 +217,6 @@ const NotarizeMany = (props: IPageProps) => {
                     </For>
                   </tbody>
                 </table>
-
-                <div>{txMessage()}</div>
               </div>
             )}
           </div>
