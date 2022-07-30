@@ -1,5 +1,5 @@
 import { Link, RouteDefinition, useRoutes } from "solid-app-router";
-import { Component, createEffect, createSignal, lazy, onMount } from "solid-js";
+import { Component, createSignal, onMount } from "solid-js";
 import { Header } from "./components/Header";
 import { ethers } from "ethers";
 import "./styles/index.css";
@@ -99,7 +99,6 @@ const App: Component = () => {
             </a>
           </div>
           <br />
-          <Routes />
         </>
       ) : (
         <div>
