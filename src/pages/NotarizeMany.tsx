@@ -187,16 +187,17 @@ const NotarizeMany = (props: IPageProps) => {
                         <tr>
                           <td>
                             {step.name}
-                            {!step[blockchainNameAttr] && (
+                            <Show when={step[blockchainNameAttr] === null}>
                               <div style={{ wordBreak: "break-all" }}>
                                 {step.calcHash}
                               </div>
-                            )}
+                            </Show>
                           </td>
                           <td>
-                            {step[blockchainNameAttr] ? (
-                              <div>Done</div>
-                            ) : (
+                            <Show
+                              when={step[blockchainNameAttr] === null}
+                              fallback={<div>Done</div>}
+                            >
                               <input
                                 class="button"
                                 type="button"
@@ -210,7 +211,7 @@ const NotarizeMany = (props: IPageProps) => {
                                   )
                                 }
                               />
-                            )}
+                            </Show>
                           </td>
                         </tr>
                       )}
