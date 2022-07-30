@@ -1,4 +1,4 @@
-import { useParams } from "solid-app-router";
+import { useParams } from "@solidjs/router";
 import { Component, createSignal } from "solid-js";
 import { IStep } from "../models/IStep";
 import { calcHash, getData } from "../utils/api";
