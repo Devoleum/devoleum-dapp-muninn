@@ -1,4 +1,4 @@
-import { Link, RouteDefinition, useRoutes } from "solid-app-router";
+import { Link, RouteDefinition, useRoutes } from "@solidjs/router";
 import { Component, createSignal, onMount } from "solid-js";
 import { Header } from "./components/Header";
 import { ethers } from "ethers";
@@ -99,6 +99,7 @@ const App: Component = () => {
             </a>
           </div>
           <br />
+          <Routes />
         </>
       ) : (
         <div>
