@@ -18,7 +18,7 @@ const NotarizeMany: Component<IPageProps> = (props) => {
     try {
       setIsValidToken(await isValidTokenCheck());
     } catch (e) {
-      console.log(e);
+      setIsValidToken(false);
     }
   });
 
