@@ -1,4 +1,4 @@
-import { Link, RouteDefinition, useRoutes } from "@solidjs/router";
+import { Link, Routes, Route } from "@solidjs/router";
 import { Component, createSignal, onMount } from "solid-js";
 import { Header } from "./components/Header";
 import { ethers } from "ethers";
@@ -20,29 +20,6 @@ const App: Component = () => {
   );
   const [signer, setSigner] = createSignal<ethers.Signer>({} as ethers.Signer);
 
-  const routes: RouteDefinition[] = [
-    {
-      path: "/:id?",
-      component: (
-        <Verifier
-          blockchainName={blockchainName()}
-          contract={contract()}
-          signer={signer()}
-        />
-      ) as Component,
-    },
-    {
-      path: "/notarizer",
-      component: (
-        <NotarizeMany
-          blockchainName={blockchainName()}
-          contract={contract()}
-          signer={signer()}
-        />
-      ) as Component,
-    },
-  ];
-  const Routes = useRoutes(routes);
   onMount(async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
@@ -99,7 +76,28 @@ const App: Component = () => {
             </a>
           </div>
           <br />
-          <Routes />
+          <Routes>
+            <Route
+              path="/:id?"
+              component={() => (
+                <Verifier
+                  blockchainName={blockchainName()}
+                  contract={contract()}
+                  signer={signer()}
+                />
+              )}
+            />
+            <Route
+              path="/notarizer"
+              component={() => (
+                <NotarizeMany
+                  blockchainName={blockchainName()}
+                  contract={contract()}
+                  signer={signer()}
+                />
+              )}
+            />
+          </Routes>
         </>
       ) : (
         <div>

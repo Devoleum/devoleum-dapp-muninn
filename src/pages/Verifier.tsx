@@ -1,11 +1,11 @@
 import { useParams } from "@solidjs/router";
-import { Component, createSignal } from "solid-js";
+import { createSignal } from "solid-js";
 import { IStep } from "../models/IStep";
 import { calcHash, getData } from "../utils/api";
 import { IPageProps } from "../models/IPage";
 import { chainEnum } from "../models/ContractAddress";
 
-const Verifier: Component<IPageProps> = (props) => {
+const Verifier = (props: IPageProps) => {
   let { id = "" } = useParams();
   console.log("id; ", id);
 

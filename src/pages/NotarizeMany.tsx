@@ -1,11 +1,11 @@
-import { Component, createSignal, For, onMount, Show } from "solid-js";
+import { createSignal, For, onMount, Show } from "solid-js";
 import { IStep } from "../models/IStep";
 import { calcHash, getData } from "../utils/api";
 import Login from "../components/Login";
 import { IPageProps } from "../models/IPage";
 import { chainEnum } from "../models/ContractAddress";
 
-const NotarizeMany: Component<IPageProps> = (props) => {
+const NotarizeMany = (props: IPageProps) => {
   const [steps, setSteps] = createSignal<IStep[]>([] as IStep[]);
   const [txMessage, setTxMessage] = createSignal("");
   const [isValidToken, setIsValidToken] = createSignal(false);
