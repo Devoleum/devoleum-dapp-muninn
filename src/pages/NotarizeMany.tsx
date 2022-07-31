@@ -5,7 +5,7 @@ import Login from "../components/Login";
 import { IPageProps } from "../models/IPage";
 import { chainEnum } from "../models/ContractAddress";
 
-const NotarizeMany = (props: IPageProps) => {
+export const NotarizeMany = (props: IPageProps) => {
   const [steps, setSteps] = createSignal<IStep[]>([] as IStep[]);
   const [txMessage, setTxMessage] = createSignal("");
   const [isValidToken, setIsValidToken] = createSignal(false);
@@ -137,94 +137,103 @@ const NotarizeMany = (props: IPageProps) => {
   };
 
   return (
-    <div>
-      <h2 class="sub-title">Notarizer</h2>
+    <Show
+      when={window.ethereum}
+      fallback={
+        <div>
+          {" "}
+          Please change Metamask network to Polygon Matic or Sepolia and refresh
+          the page
+        </div>
+      }
+    >
       <div>
-        <Show
-          when={props.signer && isValidToken()}
-          fallback={<Login onComplete={(res) => setIsValidToken(true)} />}
-        >
-          <div class="row">
-            <div>
-              <h4>1. Get Steps</h4>
-              <p>Here the admin can notarize multiple proofs</p>
+        <h2 class="sub-title">Notarizer</h2>
+        <div>
+          <Show
+            when={props.signer && isValidToken()}
+            fallback={<Login onComplete={(res) => setIsValidToken(true)} />}
+          >
+            <div class="row">
               <div>
-                <a href={txMessage()} target="_blank">
-                  {txMessage()}
-                </a>
-              </div>
-              <form onSubmit={handleSubmit}>
-                <div class="row">
-                  <input
-                    class="input"
-                    type="text"
-                    placeholder="History id"
-                    id="historyId"
-                  />
+                <h4>1. Get Steps</h4>
+                <p>Here the admin can notarize multiple proofs</p>
+                <div>
+                  <a href={txMessage()} target="_blank">
+                    {txMessage()}
+                  </a>
                 </div>
-                <input
-                  class="button"
-                  type="submit"
-                  id="getInfo"
-                  value="Get Info"
-                />
-              </form>
-            </div>
-            {steps && (
-              <div class="twelve columns" id="stepContainer">
-                <h4>2. Notarize</h4>
-                <div>{txMessage()}</div>
-                <table class="u-full-width" id="stepTable">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Notarize</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <For each={steps()} fallback={<div>Loading...</div>}>
-                      {(step, idx) => (
-                        <tr>
-                          <td>
-                            {step.name}
-                            <Show when={step[blockchainNameAttr] === null}>
-                              <div style={{ wordBreak: "break-all" }}>
-                                {step.calcHash}
-                              </div>
-                            </Show>
-                          </td>
-                          <td>
-                            <Show
-                              when={step[blockchainNameAttr] === null}
-                              fallback={<div>Done</div>}
-                            >
-                              <input
-                                class="button"
-                                type="button"
-                                id="btnnotarize"
-                                value="GO"
-                                onClick={() =>
-                                  notarizeProof(
-                                    step.calcHash ? step.calcHash : "",
-                                    step._id.$oid,
-                                    idx()
-                                  )
-                                }
-                              />
-                            </Show>
-                          </td>
-                        </tr>
-                      )}
-                    </For>
-                  </tbody>
-                </table>
+                <form onSubmit={handleSubmit}>
+                  <div class="row">
+                    <input
+                      class="input"
+                      type="text"
+                      placeholder="History id"
+                      id="historyId"
+                    />
+                  </div>
+                  <input
+                    class="button"
+                    type="submit"
+                    id="getInfo"
+                    value="Get Info"
+                  />
+                </form>
               </div>
-            )}
-          </div>
-        </Show>
+              {steps && (
+                <div class="twelve columns" id="stepContainer">
+                  <h4>2. Notarize</h4>
+                  <div>{txMessage()}</div>
+                  <table class="u-full-width" id="stepTable">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Notarize</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <For each={steps()} fallback={<div>Loading...</div>}>
+                        {(step, idx) => (
+                          <tr>
+                            <td>
+                              {step.name}
+                              <Show when={step[blockchainNameAttr] === null}>
+                                <div style={{ wordBreak: "break-all" }}>
+                                  {step.calcHash}
+                                </div>
+                              </Show>
+                            </td>
+                            <td>
+                              <Show
+                                when={step[blockchainNameAttr] === null}
+                                fallback={<div>Done</div>}
+                              >
+                                <input
+                                  class="button"
+                                  type="button"
+                                  id="btnnotarize"
+                                  value="GO"
+                                  onClick={() =>
+                                    notarizeProof(
+                                      step.calcHash ? step.calcHash : "",
+                                      step._id.$oid,
+                                      idx()
+                                    )
+                                  }
+                                />
+                              </Show>
+                            </td>
+                          </tr>
+                        )}
+                      </For>
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </Show>
+        </div>
       </div>
-    </div>
+    </Show>
   );
 };
-
-export default NotarizeMany;

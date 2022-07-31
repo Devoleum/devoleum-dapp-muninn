@@ -1,11 +1,11 @@
 import { useParams } from "@solidjs/router";
-import { createSignal } from "solid-js";
+import { createSignal, Show } from "solid-js";
 import { IStep } from "../models/IStep";
 import { calcHash, getData } from "../utils/api";
 import { IPageProps } from "../models/IPage";
 import { chainEnum } from "../models/ContractAddress";
 
-const Verifier = (props: IPageProps) => {
+export const Verifier = (props: IPageProps) => {
   let { id = "" } = useParams();
   console.log("id; ", id);
 
@@ -39,80 +39,89 @@ const Verifier = (props: IPageProps) => {
   };
 
   return (
-    <div>
-      <div>
-        <span class="label">Please insert the Step ID</span>
-      </div>
-      <input
-        class="input"
-        type="text"
-        onChange={(e: any) => {
-          setItemId(e.target.value);
-        }}
-        value={itemId()}
-      />
-      <div>
-        <button class="button" onClick={() => getDevoleumStep()}>
-          Verify Step
-        </button>
-      </div>
-      <span>{error}</span>
-      <br />
-      <br />
-      {proof() && step() && (
+    <Show
+      when={window.ethereum}
+      fallback={
         <div>
-          <div class="tab-with-corner">
-            Devoleum Step{" - "}
-            {proof() > 0 ? (
-              <span style={{ color: " #44f1a6" }}>Matching</span>
-            ) : (
-              <span style={{ color: "red" }}>Not Matching</span>
-            )}
-          </div>
-          <div class="boxed">
-            <div>
-              <span class="label">Step ID: </span>
-              {itemId()}
-            </div>
-            <div>
-              <span class="label">Step name: </span>
-              <a
-                href={"https://app.devoleum.com/step/" + step()._id["$oid"]}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {step().name}
-              </a>
-            </div>
-            <div>
-              <span class="label">JSON hash: </span>
-              {hash()}
-            </div>
-            <div>
-              <span class="label">{props.blockchainName} Timestamp: </span>
-              {new Date(proof() * 1000).toLocaleString()}
-            </div>
-            <div>
-              <span class="label">{props.blockchainName} tx: </span>
-              <a
-                href={step()[blockchainNameAttr] as string}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {step()[blockchainNameAttr] as string}
-              </a>
-            </div>
-            <div>
-              <span class="label">JSON link: </span>
-              <a href={step().uri} target="_blank" rel="noopener noreferrer">
-                {step().uri}
-              </a>
-            </div>
-          </div>
+          {" "}
+          Please change Metamask network to Polygon Matic or Sepolia and refresh
+          the page
         </div>
-      )}
-    </div>
+      }
+    >
+      <div>
+        <div>
+          <span class="label">Please insert the Step ID</span>
+        </div>
+        <input
+          class="input"
+          type="text"
+          onChange={(e: any) => {
+            setItemId(e.target.value);
+          }}
+          value={itemId()}
+        />
+        <div>
+          <button class="button" onClick={() => getDevoleumStep()}>
+            Verify Step
+          </button>
+        </div>
+        <span>{error}</span>
+        <br />
+        <br />
+        {proof() && step() && (
+          <div>
+            <div class="tab-with-corner">
+              Devoleum Step{" - "}
+              {proof() > 0 ? (
+                <span style={{ color: " #44f1a6" }}>Matching</span>
+              ) : (
+                <span style={{ color: "red" }}>Not Matching</span>
+              )}
+            </div>
+            <div class="boxed">
+              <div>
+                <span class="label">Step ID: </span>
+                {itemId()}
+              </div>
+              <div>
+                <span class="label">Step name: </span>
+                <a
+                  href={"https://app.devoleum.com/step/" + step()._id["$oid"]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {step().name}
+                </a>
+              </div>
+              <div>
+                <span class="label">JSON hash: </span>
+                {hash()}
+              </div>
+              <div>
+                <span class="label">{props.blockchainName} Timestamp: </span>
+                {new Date(proof() * 1000).toLocaleString()}
+              </div>
+              <div>
+                <span class="label">{props.blockchainName} tx: </span>
+                <a
+                  href={step()[blockchainNameAttr] as string}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {step()[blockchainNameAttr] as string}
+                </a>
+              </div>
+              <div>
+                <span class="label">JSON link: </span>
+                <a href={step().uri} target="_blank" rel="noopener noreferrer">
+                  {step().uri}
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </Show>
   );
 };
-
-export default Verifier;

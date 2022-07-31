@@ -5,9 +5,8 @@ import { ethers } from "ethers";
 import "./styles/index.css";
 import "./styles/responsive.css";
 import DevoleumArtifact from "./assets/Devoleum.json";
-import Verifier from "./pages/Verifier";
-import NotarizeMany from "./pages/NotarizeMany";
 import { chainEnum } from "./models/ContractAddress";
+import { AlgoVerifier, NotarizeMany, Verifier } from "./pages";
 console.log(import.meta.env.VITE_API_BASE_URL);
 
 const App: Component = () => {
@@ -57,55 +56,38 @@ const App: Component = () => {
 
   return (
     <div class="container App">
-      <h1 class="title">Devoleum - {blockchainName()} Verifier</h1>
-      {window.ethereum ? (
-        <>
-          <nav>
-            <Link href="/">Verifier</Link> |{" "}
-            <Link href="/notarizer">Notarizer</Link>
-          </nav>
-          <Header blockchainName={blockchainName()} />
-          <div>
-            In order to make it work you need to have the{" "}
-            <a
-              href="https://metamask.io/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Metamask browser extension.
-            </a>
-          </div>
-          <br />
-          <Routes>
-            <Route
-              path="/:id?"
-              component={() => (
-                <Verifier
-                  blockchainName={blockchainName()}
-                  contract={contract()}
-                  signer={signer()}
-                />
-              )}
+      <h1 class="title">Devoleum Verifier</h1>
+      <nav>
+        <Link href="/evm">EVM Verifier</Link> |{" "}
+        <Link href="/algoverifier">Algorand Verifier</Link> |{" "}
+        <Link href="/notarizer">Notarizer</Link>
+      </nav>
+      <Header />
+
+      <br />
+      <Routes>
+        <Route
+          path="/evm/:id?"
+          component={() => (
+            <Verifier
+              blockchainName={blockchainName()}
+              contract={contract()}
+              signer={signer()}
             />
-            <Route
-              path="/notarizer"
-              component={() => (
-                <NotarizeMany
-                  blockchainName={blockchainName()}
-                  contract={contract()}
-                  signer={signer()}
-                />
-              )}
+          )}
+        />
+        <Route path="/algoverifier/:id?" component={() => <AlgoVerifier />} />
+        <Route
+          path="/notarizer"
+          component={() => (
+            <NotarizeMany
+              blockchainName={blockchainName()}
+              contract={contract()}
+              signer={signer()}
             />
-          </Routes>
-        </>
-      ) : (
-        <div>
-          {" "}
-          Please change Metamask network to Polygon Matic or Sepolia and refresh
-          the page
-        </div>
-      )}
+          )}
+        />
+      </Routes>
     </div>
   );
 };
