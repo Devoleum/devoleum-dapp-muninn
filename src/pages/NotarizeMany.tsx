@@ -152,7 +152,8 @@ export const NotarizeMany = (props: IPageProps) => {
       }
     >
       <div>
-        <h2 class="sub-title">Notarizer</h2>
+        <h2 class="sub-title">{blockchainNameAttr().name} Notarizer</h2>
+
         <div>
           <Show
             when={props.signer && isValidToken()}
@@ -184,10 +185,7 @@ export const NotarizeMany = (props: IPageProps) => {
                   />
                 </form>
               </div>
-              <div style={{ "line-height": "0.5", "padding-bottom": "16px" }}>
-                <p>{blockchainNameAttr().name}</p>
-                <p class="small">{props.contract.address}</p>
-              </div>
+
               {steps && (
                 <div class="twelve columns" id="stepContainer">
                   <h4>2. Notarize</h4>

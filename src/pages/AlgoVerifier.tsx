@@ -56,6 +56,9 @@ export const AlgoVerifier = () => {
 
   return (
     <div>
+      <div style={{ "line-height": "0.5", "padding-bottom": "16px" }}>
+        <p>Verifying on Algorand</p>
+      </div>
       <div>
         <div class="label">Please insert the Step ID</div>
       </div>
