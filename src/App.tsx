@@ -1,5 +1,5 @@
 import { Link, Routes, Route } from "@solidjs/router";
-import { Component, createSignal, onMount } from "solid-js";
+import { Component, createEffect, createSignal, onMount } from "solid-js";
 import { Header } from "./components/Header";
 import { ethers } from "ethers";
 import "./styles/index.css";
@@ -34,6 +34,10 @@ const App: Component = () => {
     console.log("contractTemp: ", contractTemp);
 
     setContract(contractTemp);
+  });
+
+  window.ethereum.on("chainChanged", () => {
+    window.location.reload();
   });
 
   const chainIdSwitch = (chainId: number) => {
