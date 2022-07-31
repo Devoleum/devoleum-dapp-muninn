@@ -36,9 +36,10 @@ const App: Component = () => {
     setContract(contractTemp);
   });
 
-  window.ethereum.on("chainChanged", () => {
-    window.location.reload();
-  });
+  window.ethereum &&
+    window.ethereum.on("chainChanged", () => {
+      window.location.reload();
+    });
 
   const chainIdSwitch = (chainId: number) => {
     switch (chainId) {
@@ -64,8 +65,7 @@ const App: Component = () => {
       <h1 class="title">Devoleum Verifier</h1>
       <nav>
         <Link href="/evm">EVM Verifier</Link> |{" "}
-        <Link href="/algorand">Algorand Verifier</Link> |{" "}
-        <Link href="/notarizer">Notarizer</Link>
+        <Link href="/algorand">Algorand Verifier</Link>
       </nav>
       <Header />
 
