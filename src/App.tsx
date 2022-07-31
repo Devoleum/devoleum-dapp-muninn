@@ -7,7 +7,6 @@ import "./styles/responsive.css";
 import DevoleumArtifact from "./assets/Devoleum.json";
 import { chainEnum } from "./models/ContractAddress";
 import { AlgoVerifier, NotarizeMany, Verifier } from "./pages";
-console.log(import.meta.env.VITE_API_BASE_URL);
 
 const App: Component = () => {
   const [blockchainName, setBlockchainName] = createSignal("Unkown");
@@ -30,9 +29,6 @@ const App: Component = () => {
       DevoleumArtifact.abi,
       provider
     );
-
-    console.log("contractTemp: ", contractTemp);
-
     setContract(contractTemp);
   });
 

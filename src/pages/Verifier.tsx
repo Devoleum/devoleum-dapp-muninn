@@ -24,12 +24,6 @@ export const Verifier = (props: IPageProps) => {
         }
   );
 
-  console.log(
-    "blockchainNameAttr: ",
-    blockchainNameAttr(),
-    props.contract.address
-  );
-
   const getDevoleumStep = async () => {
     let step: IStep = await getData(
       `${import.meta.env.VITE_API_BASE_URL}/api/steps/${itemId()}`
