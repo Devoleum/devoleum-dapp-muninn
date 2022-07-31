@@ -21,7 +21,6 @@ const App: Component = () => {
 
   onMount(async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
-    await provider.send("eth_requestAccounts", []);
     const { chainId } = await provider.getNetwork();
     chainIdSwitch(chainId);
     const signerTemp = provider.getSigner();
@@ -31,6 +30,8 @@ const App: Component = () => {
       DevoleumArtifact.abi,
       provider
     );
+
+    console.log("contractTemp: ", contractTemp);
 
     setContract(contractTemp);
   });

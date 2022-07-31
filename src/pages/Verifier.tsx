@@ -1,5 +1,5 @@
 import { useParams } from "@solidjs/router";
-import { createSignal, Show } from "solid-js";
+import { createEffect, createMemo, createSignal, Show } from "solid-js";
 import { IStep } from "../models/IStep";
 import { calcHash, getData } from "../utils/api";
 import { IPageProps } from "../models/IPage";
@@ -15,10 +15,20 @@ export const Verifier = (props: IPageProps) => {
   const [error, setError] = createSignal("");
   const [itemId, setItemId] = createSignal<string>(id);
 
-  const blockchainNameAttr: string =
+  const blockchainNameAttr = createMemo(() =>
     props.contract.address === chainEnum.POLYGON
-      ? "polygon_matic_v2_notarization"
-      : "sepolia_test_eth_notarization";
+      ? { name: "Polygon Matic", key: "polygon_matic_v2_notarization" }
+      : {
+          name: "Sepolia Ethereum Testnet",
+          key: "sepolia_test_eth_notarization",
+        }
+  );
+
+  console.log(
+    "blockchainNameAttr: ",
+    blockchainNameAttr(),
+    props.contract.address
+  );
 
   const getDevoleumStep = async () => {
     let step: IStep = await getData(
@@ -40,7 +50,7 @@ export const Verifier = (props: IPageProps) => {
 
   return (
     <Show
-      when={window.ethereum}
+      when={window.ethereum && props.contract.address}
       fallback={
         <div>
           {" "}
@@ -50,6 +60,11 @@ export const Verifier = (props: IPageProps) => {
       }
     >
       <div>
+        <div style={{ "line-height": "0.5", "padding-bottom": "16px" }}>
+          <p>{blockchainNameAttr().name}</p>
+          <p class="small">{props.contract.address}</p>
+        </div>
+
         <div>
           <span class="label">Please insert the Step ID</span>
         </div>
@@ -105,11 +120,11 @@ export const Verifier = (props: IPageProps) => {
               <div>
                 <span class="label">{props.blockchainName} tx: </span>
                 <a
-                  href={step()[blockchainNameAttr] as string}
+                  href={step()[blockchainNameAttr().key] as string}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {step()[blockchainNameAttr] as string}
+                  {step()[blockchainNameAttr().key] as string}
                 </a>
               </div>
               <div>

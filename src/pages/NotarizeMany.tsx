@@ -1,4 +1,4 @@
-import { createSignal, For, onMount, Show } from "solid-js";
+import { createMemo, createSignal, For, onMount, Show } from "solid-js";
 import { IStep } from "../models/IStep";
 import { calcHash, getData } from "../utils/api";
 import Login from "../components/Login";
@@ -9,10 +9,14 @@ export const NotarizeMany = (props: IPageProps) => {
   const [steps, setSteps] = createSignal<IStep[]>([] as IStep[]);
   const [txMessage, setTxMessage] = createSignal("");
   const [isValidToken, setIsValidToken] = createSignal(false);
-  const blockchainNameAttr: string =
+  const blockchainNameAttr = createMemo(() =>
     props.contract.address === chainEnum.POLYGON
-      ? "polygon_matic_v2_notarization"
-      : "sepolia_test_eth_notarization";
+      ? { name: "Polygon Matic", key: "polygon_matic_v2_notarization" }
+      : {
+          name: "Sepolia Ethereum Testnet",
+          key: "sepolia_test_eth_notarization",
+        }
+  );
 
   onMount(async () => {
     try {
@@ -106,7 +110,7 @@ export const NotarizeMany = (props: IPageProps) => {
         body: JSON.stringify({
           txurl: txurl,
           hash: calchash,
-          chain_name: blockchainNameAttr,
+          chain_name: blockchainNameAttr().key,
         }),
       }
     );
@@ -180,54 +184,62 @@ export const NotarizeMany = (props: IPageProps) => {
                   />
                 </form>
               </div>
+              <div style={{ "line-height": "0.5", "padding-bottom": "16px" }}>
+                <p>{blockchainNameAttr().name}</p>
+                <p class="small">{props.contract.address}</p>
+              </div>
               {steps && (
                 <div class="twelve columns" id="stepContainer">
                   <h4>2. Notarize</h4>
                   <div>{txMessage()}</div>
-                  <table class="u-full-width" id="stepTable">
-                    <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Notarize</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <For each={steps()} fallback={<div>Loading...</div>}>
-                        {(step, idx) => (
-                          <tr>
-                            <td>
-                              {step.name}
-                              <Show when={step[blockchainNameAttr] === null}>
-                                <div style={{ wordBreak: "break-all" }}>
-                                  {step.calcHash}
-                                </div>
-                              </Show>
-                            </td>
-                            <td>
-                              <Show
-                                when={step[blockchainNameAttr] === null}
-                                fallback={<div>Done</div>}
-                              >
-                                <input
-                                  class="button"
-                                  type="button"
-                                  id="btnnotarize"
-                                  value="GO"
-                                  onClick={() =>
-                                    notarizeProof(
-                                      step.calcHash ? step.calcHash : "",
-                                      step._id.$oid,
-                                      idx()
-                                    )
-                                  }
-                                />
-                              </Show>
-                            </td>
-                          </tr>
-                        )}
-                      </For>
-                    </tbody>
-                  </table>
+                  <Show when={steps.length > 0}>
+                    <table class="u-full-width" id="stepTable">
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Notarize</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <For each={steps()} fallback={<div>Loading...</div>}>
+                          {(step, idx) => (
+                            <tr>
+                              <td>
+                                {step.name}
+                                <Show
+                                  when={step[blockchainNameAttr().key] === null}
+                                >
+                                  <div style={{ wordBreak: "break-all" }}>
+                                    {step.calcHash}
+                                  </div>
+                                </Show>
+                              </td>
+                              <td>
+                                <Show
+                                  when={step[blockchainNameAttr().key] === null}
+                                  fallback={<div>Done</div>}
+                                >
+                                  <input
+                                    class="button"
+                                    type="button"
+                                    id="btnnotarize"
+                                    value="GO"
+                                    onClick={() =>
+                                      notarizeProof(
+                                        step.calcHash ? step.calcHash : "",
+                                        step._id.$oid,
+                                        idx()
+                                      )
+                                    }
+                                  />
+                                </Show>
+                              </td>
+                            </tr>
+                          )}
+                        </For>
+                      </tbody>
+                    </table>
+                  </Show>
                 </div>
               )}
             </div>
