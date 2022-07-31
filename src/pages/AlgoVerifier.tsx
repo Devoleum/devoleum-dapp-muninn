@@ -59,34 +59,6 @@ export const AlgoVerifier = () => {
       <div>
         <div class="label">Please insert the Step ID</div>
       </div>
-      <div>
-        <form style={{ display: "flex", margin: "15px 0 15px" }}>
-          <div class="radio">
-            <label>
-              <input
-                name="net-type"
-                type="radio"
-                value="test"
-                checked={net() === "test"}
-                onChange={handleOptionChange}
-              />
-              TestNet
-            </label>
-          </div>
-          <div class="radio">
-            <label>
-              <input
-                name="net-type"
-                type="radio"
-                value="main"
-                checked={net() === "main"}
-                onChange={handleOptionChange}
-              />
-              MainNet
-            </label>
-          </div>
-        </form>
-      </div>
       <input
         class="input"
         type="text"

@@ -59,7 +59,7 @@ const App: Component = () => {
       <h1 class="title">Devoleum Verifier</h1>
       <nav>
         <Link href="/evm">EVM Verifier</Link> |{" "}
-        <Link href="/algoverifier">Algorand Verifier</Link> |{" "}
+        <Link href="/algorand">Algorand Verifier</Link> |{" "}
         <Link href="/notarizer">Notarizer</Link>
       </nav>
       <Header />
@@ -76,7 +76,7 @@ const App: Component = () => {
             />
           )}
         />
-        <Route path="/algoverifier/:id?" component={() => <AlgoVerifier />} />
+        <Route path="/algorand/:id?" component={() => <AlgoVerifier />} />
         <Route
           path="/notarizer"
           component={() => (
